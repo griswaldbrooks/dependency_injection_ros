@@ -28,7 +28,7 @@ RUN apt update -y &&         \
              python-catkin-tools
 
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash'
-
 RUN addgroup --gid $GID $USER
 RUN adduser --disabled-password --gecos '' --uid $UID --gid $GID $USER
 USER $USER
+RUN mkdir -p /home/$USER/ws
