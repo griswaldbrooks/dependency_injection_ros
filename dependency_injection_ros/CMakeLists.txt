@@ -16,9 +16,14 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(calculator src/calculator.cpp)
-target_link_libraries(calculator ${catkin_LIBRARIES})
+# add_executable(calculator src/calculator.cpp)
+# target_link_libraries(calculator ${catkin_LIBRARIES})
 
-add_executable(di_calculator src/di_calculator.cpp)
+add_executable(di_calculator
+  src/di_calculator.cpp
+  src/di_node.cpp
+  src/ros_middleware.cpp
+)
+
 target_link_libraries(di_calculator ${catkin_LIBRARIES})
 # add_dependencies(calculator beginner_tutorials_generate_messages_cpp)

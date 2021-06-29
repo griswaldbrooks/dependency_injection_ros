@@ -11,9 +11,9 @@ class Calculator
   {}
 
   void doit(const std_msgs::Int64::ConstPtr& msg) {
-    std_msgs::Int64 incremented = msg;
-    incremented.data += 1;
-    pub_->publish(incremented);
+    std_msgs::Int64 incremented;
+    incremented.data = msg->data + 1;
+    pub_.publish(incremented);
   }
  private:
    ros::NodeHandle nh_;
