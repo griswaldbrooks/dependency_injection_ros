@@ -1,7 +1,7 @@
 #include <string>
 #include <ros/ros.h>
 #include <std_msgs/Int64.h>
-#include <dependency_injection_ros/ros_middleware.h>
+#include <publisher_subscriber/ros_middleware.h>
 
 
 RosMiddleware::RosMiddleware(const ros::NodeHandle& nh,

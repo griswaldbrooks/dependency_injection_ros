@@ -3,9 +3,9 @@
 
 #include <std_msgs/Int64.h>
 
-#include "dependency_injection_ros/di_calculator.h"
+#include "publisher_subscriber/incrementer.h"
 
-Calculator::Calculator(std::unique_ptr<MiddlewareHandle> mw)
+Incrementer::Incrementer(std::unique_ptr<MiddlewareHandle> mw)
 : mw_{std::move(mw)} {
   mw_->registerCallback([this](const std_msgs::Int64::ConstPtr& msg){
     std_msgs::Int64 incremented;

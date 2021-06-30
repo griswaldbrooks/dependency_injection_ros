@@ -5,7 +5,7 @@
 
 #include <std_msgs/Int64.h>
 
-class Calculator
+class Incrementer
 {
  public:
   struct MiddlewareHandle {
@@ -15,7 +15,7 @@ class Calculator
     virtual ~MiddlewareHandle() = default;
   };
 
-  Calculator(std::unique_ptr<MiddlewareHandle> mw);
+  Incrementer(std::unique_ptr<MiddlewareHandle> mw);
 
  private:
    std::unique_ptr<MiddlewareHandle> mw_;

@@ -1,46 +1,48 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(dependency_injection_ros)
+project(publisher_subscriber)
 
 ## Find catkin and any catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs genmsg)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
 
 ## Declare a catkin package
 catkin_package(
   INCLUDE_DIRS
     include
+	LIBRARIES
+	  ${PROJECT_NAME}
   CATKIN_DEPENDS
     std_msgs
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_library(libdi_calculator
-  src/di_calculator.cpp
+add_library(lib${PROJECT_NAME}
+  src/incrementer.cpp
   src/ros_middleware.cpp
 )
 
-target_link_libraries(libdi_calculator
+target_link_libraries(lib${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
-add_executable(di_calculator
-  src/di_node.cpp
+add_executable(${PROJECT_NAME}
+  src/node.cpp
 )
 
-target_link_libraries(di_calculator
-  libdi_calculator
+target_link_libraries(${PROJECT_NAME}
+  lib${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
 if (CATKIN_ENABLE_TESTING)
-  catkin_add_gmock(di_calculator_tests test/di_calculator_test.cpp)
-  target_link_libraries(di_calculator_tests
-    libdi_calculator
+  catkin_add_gmock(${PROJECT_NAME}_test test/incrementer_test.cpp)
+  target_link_libraries(${PROJECT_NAME}_test
+    lib${PROJECT_NAME}
     ${catkin_LIBRARIES}
   )
 endif()
 
-install(TARGETS di_calculator
+install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
