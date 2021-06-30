@@ -4,26 +4,43 @@ project(dependency_injection_ros)
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs genmsg)
 
-message("TACOS")
-message(${PROJECT_SOURCE_DIR})
-
 ## Declare a catkin package
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS
+    include
   CATKIN_DEPENDS
     std_msgs
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-# add_executable(calculator src/calculator.cpp)
-# target_link_libraries(calculator ${catkin_LIBRARIES})
-
-add_executable(di_calculator
+add_library(libdi_calculator
   src/di_calculator.cpp
-  src/di_node.cpp
   src/ros_middleware.cpp
 )
 
-target_link_libraries(di_calculator ${catkin_LIBRARIES})
-# add_dependencies(calculator beginner_tutorials_generate_messages_cpp)
+target_link_libraries(libdi_calculator
+  ${catkin_LIBRARIES}
+)
+
+add_executable(di_calculator
+  src/di_node.cpp
+)
+
+target_link_libraries(di_calculator
+  libdi_calculator
+  ${catkin_LIBRARIES}
+)
+
+if (CATKIN_ENABLE_TESTING)
+  catkin_add_gmock(di_calculator_tests test/di_calculator_test.cpp)
+  target_link_libraries(di_calculator_tests
+    libdi_calculator
+    ${catkin_LIBRARIES}
+  )
+endif()
+
+install(TARGETS di_calculator
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
