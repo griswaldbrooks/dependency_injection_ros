@@ -13,6 +13,7 @@ RUN apt update -y &&         \
     apt install -y           \
              build-essential \
              cmake           \
+             curl            \
              git             \
              lsb-core        \
              python3         \
@@ -23,9 +24,13 @@ RUN apt update -y &&         \
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN wget http://packages.ros.org/ros.key -O - | apt-key add -
 
-RUN apt update -y &&         \
-    apt install -y           \
-             python-catkin-tools
+RUN apt update -y &&             \
+    apt install -y               \
+             python-catkin-tools \
+             clang-format-10     \
+             clang-tidy-10
+
+RUN pip3 install pre-commit
 
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash'
 RUN addgroup --gid $GID $USER

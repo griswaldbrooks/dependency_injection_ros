@@ -1,15 +1,16 @@
 #pragma once
 
+#include <injection_messages/OneNumber.h>
+
 #include <functional>
 #include <memory>
 
-#include <injection_messages/OneNumber.h>
-
-class Incrementer
-{
+class Incrementer {
  public:
   struct MiddlewareHandle {
-    using Callback = std::function<bool(const injection_messages::OneNumber::Request&, injection_messages::OneNumber::Response&)>;
+    using Callback =
+        std::function<bool(const injection_messages::OneNumber::Request&,
+                           injection_messages::OneNumber::Response&)>;
     virtual void registerCallback(Callback cb) = 0;
     virtual ~MiddlewareHandle() = default;
   };
@@ -17,5 +18,5 @@ class Incrementer
   Incrementer(std::unique_ptr<MiddlewareHandle> mw);
 
  private:
-   std::unique_ptr<MiddlewareHandle> mw_;
+  std::unique_ptr<MiddlewareHandle> mw_;
 };

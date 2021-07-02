@@ -5,8 +5,8 @@
 #include <boost/make_shared.hpp>
 
 // Gtest
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 // ROS
 #include <std_msgs/Int64.h>
@@ -47,8 +47,9 @@ TEST(IncrementerTests, PublishIncrement) {
   do not need to test that again, only define the behavior.
   */
   Incrementer::MiddlewareHandle::Callback callback;
-  ON_CALL(*mw, registerCallback(_)).WillByDefault(
-    Invoke([&](Incrementer::MiddlewareHandle::Callback cb) { callback = cb;}));
+  ON_CALL(*mw, registerCallback(_))
+      .WillByDefault(Invoke(
+          [&](Incrementer::MiddlewareHandle::Callback cb) { callback = cb; }));
 
   // THEN the incrementer should publish an incremented message.
   std_msgs::Int64 expected;
@@ -64,6 +65,6 @@ TEST(IncrementerTests, PublishIncrement) {
 }
 
 int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

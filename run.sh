@@ -4,6 +4,7 @@ docker run -it \
   --user=$(id -u $USER):$(id -g $USER)        \
   --workdir="/home/$USER/ws"            \
   --volume="$PWD:/home/$USER/ws/src"        \
+  --volume="$HOME/.gitconfig:$HOME/.gitconfig"        \
   --volume="/etc/group:/etc/group:ro"         \
   --volume="/etc/passwd:/etc/passwd:ro"       \
   --volume="/etc/shadow:/etc/shadow:ro"       \

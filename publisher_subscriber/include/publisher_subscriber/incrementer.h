@@ -1,12 +1,11 @@
 #pragma once
 
+#include <std_msgs/Int64.h>
+
 #include <functional>
 #include <memory>
 
-#include <std_msgs/Int64.h>
-
-class Incrementer
-{
+class Incrementer {
  public:
   struct MiddlewareHandle {
     using Callback = std::function<void(const std_msgs::Int64::ConstPtr&)>;
@@ -18,5 +17,5 @@ class Incrementer
   Incrementer(std::unique_ptr<MiddlewareHandle> mw);
 
  private:
-   std::unique_ptr<MiddlewareHandle> mw_;
+  std::unique_ptr<MiddlewareHandle> mw_;
 };

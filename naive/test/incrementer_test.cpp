@@ -12,8 +12,8 @@
 #include <gtest/gtest.h>
 
 // ROS
-#include <std_msgs/Int64.h>
 #include <ros/ros.h>
+#include <std_msgs/Int64.h>
 
 // Code being tested
 #include <naive/incrementer.h>
@@ -22,24 +22,26 @@ using namespace std::chrono_literals;
 
 class Spinner {
  public:
-   /**
-    \brief Launches a thread that spins ROS.
-           This is usually used to ensure that callbacks are processed.
-    */
-   Spinner() :spin{[this]{
-     while (!done && ros::ok()) {
-       ros::spinOnce();
-       ros::Duration(0.01).sleep();
-     }
-   }}{}
+  /**
+   \brief Launches a thread that spins ROS.
+          This is usually used to ensure that callbacks are processed.
+   */
+  Spinner()
+      : spin{[this] {
+          while (!done && ros::ok()) {
+            ros::spinOnce();
+            ros::Duration(0.01).sleep();
+          }
+        }} {}
 
-   ~Spinner() {
-     done = true;
-     spin.join();
-   }
+  ~Spinner() {
+    done = true;
+    spin.join();
+  }
+
  private:
-   std::atomic<bool> done{false}; ///< Flag used to join thread.
-   std::thread spin;              ///< Thread to spin ROS.
+  std::atomic<bool> done{false};  ///< Flag used to join thread.
+  std::thread spin;               ///< Thread to spin ROS.
 };
 
 /** \brief Incremented number is published when a message is received. */
@@ -55,10 +57,11 @@ TEST(IncrementerTests, PublishIncrementSpinnerClass) {
   */
   std::condition_variable cv;
   std_msgs::Int64::Ptr result;
-  ros::Subscriber sub = nh.subscribe<std_msgs::Int64>("/out", 0, [&](const auto& msg){
-    result = boost::make_shared<std_msgs::Int64>(*msg);
-    cv.notify_one();
-  });
+  ros::Subscriber sub =
+      nh.subscribe<std_msgs::Int64>("/out", 0, [&](const auto& msg) {
+        result = boost::make_shared<std_msgs::Int64>(*msg);
+        cv.notify_one();
+      });
   EXPECT_EQ(sub.getNumPublishers(), 1);
 
   // WHEN a message is published
@@ -71,7 +74,7 @@ TEST(IncrementerTests, PublishIncrementSpinnerClass) {
   /* Wait until we receive a result or time out. */
   std::mutex m;
   std::unique_lock<std::mutex> lock{m};
-  cv.wait_for(lock, 10s, [&]{return result != nullptr;});
+  cv.wait_for(lock, 10s, [&] { return result != nullptr; });
 
   // THEN the incrementer should publish an incremented message.
   EXPECT_EQ(result->data, 8);
@@ -89,9 +92,10 @@ TEST(IncrementerTests, PublishIncrementInlineSpin) {
      detail that might detract from what is being tested.
   */
   std_msgs::Int64::Ptr result;
-  ros::Subscriber sub = nh.subscribe<std_msgs::Int64>("/out", 0, [&](const auto& msg){
-    result = boost::make_shared<std_msgs::Int64>(*msg);
-  });
+  ros::Subscriber sub =
+      nh.subscribe<std_msgs::Int64>("/out", 0, [&](const auto& msg) {
+        result = boost::make_shared<std_msgs::Int64>(*msg);
+      });
   EXPECT_EQ(sub.getNumPublishers(), 1);
 
   // WHEN a message is published
@@ -103,7 +107,7 @@ TEST(IncrementerTests, PublishIncrementInlineSpin) {
 
   /* Spin the thread until a result is received or we "time out". */
   {
-    size_t count = 0; // Number of times to check before giving up.
+    size_t count = 0;  // Number of times to check before giving up.
     while (result == nullptr && ros::ok() && count < 100) {
       ros::spinOnce();
       ros::Duration(0.01).sleep();
@@ -117,8 +121,8 @@ TEST(IncrementerTests, PublishIncrementInlineSpin) {
   EXPECT_EQ(result->data, 8);
 }
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    ros::init(argc, argv, "naive_test");
-    return RUN_ALL_TESTS();
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  ros::init(argc, argv, "naive_test");
+  return RUN_ALL_TESTS();
 }
