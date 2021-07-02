@@ -7,7 +7,7 @@
 
 class RosMiddleware : public Incrementer::MiddlewareHandle {
  public:
-  RosMiddleware(const ros::NodeHandle& nh, const std::string& topic);
+  RosMiddleware(const ros::NodeHandle& nh, std::string topic);
   void registerCallback(Callback cb) override;
 
  private:

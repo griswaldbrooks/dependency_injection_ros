@@ -4,9 +4,8 @@
 
 #include <string>
 
-RosMiddleware::RosMiddleware(const ros::NodeHandle& nh,
-                             const std::string& topic)
-    : nh_{nh}, topic_{topic} {}
+RosMiddleware::RosMiddleware(const ros::NodeHandle& nh, std::string topic)
+    : nh_{nh}, topic_{std::move(topic)} {}
 
 void RosMiddleware::registerCallback(Callback cb) {
   service_ =

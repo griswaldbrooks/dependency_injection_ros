@@ -37,3 +37,5 @@ RUN addgroup --gid $GID $USER
 RUN adduser --disabled-password --gecos '' --uid $UID --gid $GID $USER
 USER $USER
 RUN mkdir -p /home/$USER/ws
+RUN cd /home/$USER/ws && \
+    catkin config --extend /opt/ros/$ROS_DISTRO --install --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_CXX_CLANG_TIDY="clang-tidy-10;-extra-arg=-Wno-unknown-warning-option"

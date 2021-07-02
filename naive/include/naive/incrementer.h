@@ -10,6 +10,7 @@ class Incrementer {
               const std::string& out_topic);
 
  private:
+  static constexpr int QUEUE_SIZE = 10;
   ros::Publisher pub_;
   ros::Subscriber sub_;
 };

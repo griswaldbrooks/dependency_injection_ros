@@ -1,5 +1,20 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.10)
 project(publisher_subscriber)
+
+# Link this 'library' to set the c++ standard / compile-time options requested
+add_library(project_options INTERFACE)
+target_compile_features(project_options INTERFACE cxx_std_17)
+
+# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
+add_library(project_warnings INTERFACE)
+
+# standard compiler warnings
+include(cmake/CompilerWarnings.cmake)
+set_project_warnings(project_warnings)
+
+# enable doxygen
+include(cmake/Doxygen.cmake)
+enable_doxygen()
 
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
@@ -14,7 +29,8 @@ catkin_package(
     std_msgs
 )
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+# Marking catkin includes as SYSTEM prevents compiler warnings on them
+include_directories(include SYSTEM ${catkin_INCLUDE_DIRS})
 
 add_library(lib${PROJECT_NAME}
   src/incrementer.cpp
@@ -22,7 +38,8 @@ add_library(lib${PROJECT_NAME}
 )
 
 target_link_libraries(lib${PROJECT_NAME}
-  ${catkin_LIBRARIES}
+  PUBLIC ${catkin_LIBRARIES}
+  PRIVATE project_options project_warnings
 )
 
 add_executable(${PROJECT_NAME}
