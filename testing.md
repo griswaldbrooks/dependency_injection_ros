@@ -1,3 +1,5 @@
+testing_patterns_ros?
+
 black box testing
 public interfaces
 side effects = the other public interface

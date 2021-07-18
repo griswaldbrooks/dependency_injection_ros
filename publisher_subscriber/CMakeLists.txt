@@ -13,8 +13,8 @@ include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
 # enable doxygen
-include(cmake/Doxygen.cmake)
-enable_doxygen()
+# include(cmake/Doxygen.cmake)
+# enable_doxygen()
 
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
